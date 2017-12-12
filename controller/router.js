@@ -21,5 +21,19 @@ exports.showIndex = function (req, res) {
     })
 }
 exports.showAlbum = function (req, res) {
-    res.end('相册' + req.params.albumName);
+    // 遍历相册中的所有图片
+    var albumName = req.params.albumName;
+    // res.end('相册' + req.params.albumName);
+    // 具体业务交给model
+    file.getAllImagesByAlbumName(albumName,function(err,imagesArray){
+        if(err){
+             //交给下面的中间件
+            res.render('err');
+            return;
+        }
+        res.render("album",{
+            "albumname" : albumName,
+            "images" : imagesArray
+        });
+    });
 }
